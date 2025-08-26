@@ -13,9 +13,6 @@ class Genre(models.Model):
     def __str__(self):
         return self.name
     
-    def get_absolute_url(self):
-        return reverse('genre-detail', args=[str(self.id)])
-    
     class Meta:
         constraints = [
             UniqueConstraint(
@@ -26,10 +23,44 @@ class Genre(models.Model):
         ]
         
 
+class Author(models.Model):
+    """Model representing an author."""
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    date_of_birth = models.DateField(null=True, blank=True)
+    date_of_death = models.DateField('Died', null=True, blank=True)
+
+    class Meta:
+        ordering = ['last_name', 'first_name']
+
+    def get_absolute_url(self):
+        return reverse('author-detail', args=[str(self.id)])
+
+    def __str__(self):
+        return f'{self.last_name}, {self.first_name}'
+
+
+class Language(models.Model):
+    """Model for representing a Language(eg. English, French etc)""" 
+    name = models.CharField(max_length=200, unique=True, 
+    help_text="Enter the book's natural language (eg. English, French etc)") 
+    
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        constraints = [
+            UniqueConstraint(
+                Lower('name'),
+                name='language_name_case_insensitive_unique',
+                violation_error_message="Language already exists!!!"
+            )
+        ]
+    
 class Book(models.Model):
     """Model representing a book (but not a specific copy of a book)."""
     title = models.CharField(max_length=200)
-    author = models.ForeignKey('Author', on_delete=models.RESTRICT, null=True)
+    author = models.ForeignKey(Author, on_delete=models.RESTRICT, null=True)
 
     summary = models.TextField(
         max_length=1000, help_text="Enter a brief description of the book")
@@ -83,3 +114,4 @@ class BookInstance(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return f'{self.id} ({self.book.title})'
+    
