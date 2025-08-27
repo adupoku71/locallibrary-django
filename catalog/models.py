@@ -75,6 +75,12 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
+    def display_genre(self):
+        """Create a string for the Genre. This is required because Genre is a many to many field. It's also required for display genre in Admin."""
+        return ', '.join(genre.name for genre in self.genre.all()[:3])
+    
+    display_genre.short_description = 'Genre' 
+        
     def get_absolute_url(self):
         """Returns the URL to access a detail record for this book."""
         return reverse('book-detail', args=[str(self.id)])
@@ -109,7 +115,7 @@ class BookInstance(models.Model):
     )
 
     class Meta:
-        ordering = ['due_back']
+        ordering = ['-due_back']
 
     def __str__(self):
         """String for representing the Model object."""
