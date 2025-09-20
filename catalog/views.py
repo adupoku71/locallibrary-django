@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
+from django.views import generic
 from .models import Book
 # Create your views here.
 
@@ -32,19 +32,17 @@ def index(request):
     return render(request, 'index.html', context=context)
 
 
-def books(request):
-    books = Book.objects.all()[:3]
+class BookListView(generic.ListView):
+    model = Book
+    context_object_name = 'book_list'
+    template_name = 'book_list.html'
+    paginate_by = 2
     
-    return JsonResponse({"books": [book.title for book in books]})
+    def get_queryset(self):
+        return Book.objects.all()
 
 
-def authors(request):
-    pass
+class BookDetailView(generic.DetailView):
+    model = Book
+    template_name = 'book_detail.html'
 
-
-def book(request, book_id):
-    pass
-
-
-def author(request, author_id):
-    pass
