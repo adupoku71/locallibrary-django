@@ -2,6 +2,7 @@
   margin-top: 20px;
   padding: 0;
   list-style: none;
+  text-decoration: none;
 }
 #logout-form {
   display: inline;
@@ -13,4 +14,8 @@
 }
 a {
   text-decoration: none;
+}
+
+.errorlist li {
+  color: rgb(110, 29, 29);
 }
