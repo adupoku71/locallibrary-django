@@ -29,8 +29,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-q_*@!vwf0wu5*#
 # DEBUG = True
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['adupoku.pythonanywhere.com', '127.0.0.1']
 
 # Application definition
 
@@ -159,3 +158,5 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+
+CSRF_TRUSTED_ORIGINS = ['https://adupoku.pythonanywhere.com']
